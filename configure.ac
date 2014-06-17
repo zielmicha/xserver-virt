@@ -2327,7 +2327,7 @@ hw/kdrive/fake/Makefile
 hw/kdrive/fbdev/Makefile
 hw/kdrive/linux/Makefile
 hw/kdrive/src/Makefile
-hw/vnc/Makefile
+hw/virt/Makefile
 test/Makefile
 test/xi2/Makefile
 xserver.ent
