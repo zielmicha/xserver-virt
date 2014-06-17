@@ -35,7 +35,7 @@ DIST_SUBDIRS = common ddc i2c x86emu int10 fbdevhw os-support \
                loader dixmods dri dri2 exa modes \
 	       utils doc man
 
-bin_PROGRAMS = Xorg
+#bin_PROGRAMS = Xorg
 nodist_Xorg_SOURCES = sdksyms.c
 
 AM_CFLAGS = $(DIX_CFLAGS) @XORG_CFLAGS@

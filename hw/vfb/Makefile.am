@@ -1,6 +1,6 @@
 SUBDIRS = man
 
-bin_PROGRAMS = Xvfb
+#bin_PROGRAMS = Xvfb
 noinst_LIBRARIES = libfbcmap.a
 
 AM_CFLAGS = -DHAVE_DIX_CONFIG_H \

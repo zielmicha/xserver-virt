@@ -1,11 +1,11 @@
 if ENABLE_UNIT_TESTS
 SUBDIRS= .
-noinst_PROGRAMS = list string touch
+#noinst_PROGRAMS = list string touch
 if XORG
 # Tests that require at least some DDX functions in order to fully link
 # For now, requires xf86 ddx, could be adjusted to use another
 SUBDIRS += xi2
-noinst_PROGRAMS += xkb input xtest misc fixes xfree86 hashtabletest os signal-logging
+#noinst_PROGRAMS += xkb input xtest misc fixes xfree86 hashtabletest os signal-logging
 endif
 check_LTLIBRARIES = libxservertest.la
 
@@ -121,4 +121,3 @@ libxservertest_la_DEPENDENCIES = $(libxservertest_la_LIBADD)
 endif
 
 EXTRA_DIST = ddxstubs.c
-

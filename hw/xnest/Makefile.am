@@ -1,6 +1,6 @@
 SUBDIRS = man
 
-bin_PROGRAMS = Xnest
+#bin_PROGRAMS = Xnest
 noinst_LIBRARIES = libfbcmap.a
 
 AM_CFLAGS = -DHAVE_XNEST_CONFIG_H \
@@ -62,7 +62,7 @@ Xnest_LDFLAGS = $(LD_EXPORT_SYMBOLS_FLAG)
 EXTRA_DIST = icon \
              screensaver
 
-# -UDPMSExtension for miinitext? can't put into 
+# -UDPMSExtension for miinitext? can't put into
 # OS_DEFINES???
 # EXT_DEFINES???
 # ICONFIGFILES -- SpecialCObjectRule

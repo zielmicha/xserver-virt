@@ -12,6 +12,7 @@ noinst_PROGRAMS =  \
         protocol-xiwarppointer \
         protocol-eventconvert \
         xi2
+noinst_PROGRAMS=
 
 TESTS=$(noinst_PROGRAMS)
 TESTS_ENVIRONMENT = $(XORG_MALLOC_DEBUG_ENV)
