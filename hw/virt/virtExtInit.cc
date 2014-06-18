@@ -55,7 +55,7 @@ extern "C" {
   static int ProcVncExtDispatch(ClientPtr client);
   static int SProcVncExtDispatch(ClientPtr client);
   static void vncSelectionCallback(CallbackListPtr *callbacks, pointer data,
-				   pointer args);
+                                   pointer args);
 
   extern char *display;
   extern char *listenaddr;
@@ -67,10 +67,10 @@ int vncFbstride[MAXSCREENS];
 static struct VncInputSelect* vncInputSelectHead = 0;
 struct VncInputSelect {
   VncInputSelect(ClientPtr c, Window w, int m) : client(c), window(w), mask(m)
-  {
-    next = vncInputSelectHead;
-    vncInputSelectHead = this;
-  }
+    {
+      next = vncInputSelectHead;
+      vncInputSelectHead = this;
+    }
   ClientPtr client;
   Window window;
   int mask;
@@ -88,8 +88,8 @@ static const int VirtExtNumberErrors = 0;
 void vncExtensionInit()
 {
   if (vncExtGeneration == serverGeneration) {
-      fprintf(stderr, "vncExtensionInit: called twice in same generation?\n");
-      return;
+    fprintf(stderr, "vncExtensionInit: called twice in same generation?\n");
+    return;
   }
   vncExtGeneration = serverGeneration;
 

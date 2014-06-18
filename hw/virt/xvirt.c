@@ -3,29 +3,29 @@
    Copyright 2009 Pierre Ossman for Cendio AB
    Copyright 2014 Michał Zieliński <michal@zielinscy.org.pl>
 
-Permission is hereby granted, free of charge, to any person obtaining
-a copy of this software and associated documentation files (the
-"Software"), to deal in the Software without restriction, including
-without limitation the rights to use, copy, modify, merge, publish,
-distribute, sublicense, and/or sell copies of the Software, and to
-permit persons to whom the Software is furnished to do so, subject to
-the following conditions:
+   Permission is hereby granted, free of charge, to any person obtaining
+   a copy of this software and associated documentation files (the
+   "Software"), to deal in the Software without restriction, including
+   without limitation the rights to use, copy, modify, merge, publish,
+   distribute, sublicense, and/or sell copies of the Software, and to
+   permit persons to whom the Software is furnished to do so, subject to
+   the following conditions:
 
-The above copyright notice and this permission notice shall be included
-in all copies or substantial portions of the Software.
+   The above copyright notice and this permission notice shall be included
+   in all copies or substantial portions of the Software.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
-OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-IN NO EVENT SHALL THE X CONSORTIUM BE LIABLE FOR ANY CLAIM, DAMAGES OR
-OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-OTHER DEALINGS IN THE SOFTWARE.
+   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+   IN NO EVENT SHALL THE X CONSORTIUM BE LIABLE FOR ANY CLAIM, DAMAGES OR
+   OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+   OTHER DEALINGS IN THE SOFTWARE.
 
-Except as contained in this notice, the name of the X Consortium shall
-not be used in advertising or otherwise to promote the sale, use or
-other dealings in this Software without prior written authorization
-from the X Consortium.
+   Except as contained in this notice, the name of the X Consortium shall
+   not be used in advertising or otherwise to promote the sale, use or
+   other dealings in this Software without prior written authorization
+   from the X Consortium.
 
 */
 #include <stdbool.h>
@@ -71,7 +71,7 @@ from the X Consortium.
 #include "randrstr.h"
 
 #include <X11/keysym.h>
-  extern char buildtime[];
+extern char buildtime[];
 
 #if XORG >= 17
 #undef VENDOR_RELEASE
@@ -162,7 +162,7 @@ vfbInitializePixmapDepths(void)
     int i;
     vfbPixmapDepths[1] = TRUE; /* always need bitmaps */
     for (i = 2; i <= 32; i++)
-	vfbPixmapDepths[i] = FALSE;
+        vfbPixmapDepths[i] = FALSE;
 }
 
 static void
@@ -172,15 +172,15 @@ vfbInitializeDefaultScreens(void)
 
     for (i = 0; i < MAXSCREENS; i++)
     {
-	vfbScreens[i].scrnum = i;
-	vfbScreens[i].blackPixel = VFB_DEFAULT_BLACKPIXEL;
-	vfbScreens[i].whitePixel = VFB_DEFAULT_WHITEPIXEL;
-	vfbScreens[i].lineBias = VFB_DEFAULT_LINEBIAS;
-	vfbScreens[i].fb.width  = VFB_DEFAULT_WIDTH;
-	vfbScreens[i].fb.height = VFB_DEFAULT_HEIGHT;
-	vfbScreens[i].fb.pfbMemory = NULL;
-	vfbScreens[i].fb.depth  = VFB_DEFAULT_DEPTH;
-	vfbScreens[i].pixelFormatDefined = FALSE;
+        vfbScreens[i].scrnum = i;
+        vfbScreens[i].blackPixel = VFB_DEFAULT_BLACKPIXEL;
+        vfbScreens[i].whitePixel = VFB_DEFAULT_WHITEPIXEL;
+        vfbScreens[i].lineBias = VFB_DEFAULT_LINEBIAS;
+        vfbScreens[i].fb.width  = VFB_DEFAULT_WIDTH;
+        vfbScreens[i].fb.height = VFB_DEFAULT_HEIGHT;
+        vfbScreens[i].fb.pfbMemory = NULL;
+        vfbScreens[i].fb.depth  = VFB_DEFAULT_DEPTH;
+        vfbScreens[i].pixelFormatDefined = FALSE;
     }
     vfbNumScreens = 1;
 }
@@ -197,10 +197,10 @@ vfbBitsPerPixel(int depth)
 static void vfbFreeFramebufferMemory(vfbFramebufferInfoPtr pfb);
 
 #ifdef DPMSExtension
-    /* Why support DPMS? Because stupid modern desktop environments
-       such as Unity 2D on Ubuntu 11.10 crashes if DPMS is not
-       available. (DPMSSet is called by dpms.c, but the return value
-       is ignored.) */
+/* Why support DPMS? Because stupid modern desktop environments
+   such as Unity 2D on Ubuntu 11.10 crashes if DPMS is not
+   available. (DPMSSet is called by dpms.c, but the return value
+   is ignored.) */
 int DPMSSet(ClientPtr client, int level)
 {
     return Success;
@@ -217,7 +217,7 @@ Bool DPMSSupported()
 #if XORG < 111
 void ddxGiveUp()
 #else
-void ddxGiveUp(enum ExitCode error)
+    void ddxGiveUp(enum ExitCode error)
 #endif
 {
     int i;
@@ -231,7 +231,7 @@ void
 #if XORG < 111
 AbortDDX()
 #else
-AbortDDX(enum ExitCode error)
+    AbortDDX(enum ExitCode error)
 #endif
 {
 #if XORG < 111
@@ -273,7 +273,7 @@ void
 #if XORG < 113
 OsVendorFatalError()
 #else
-OsVendorFatalError(const char *f, va_list args)
+    OsVendorFatalError(const char *f, va_list args)
 #endif
 {
 }
@@ -293,7 +293,7 @@ ddxUseMsg()
     ErrorF("-pixdepths list-of-int support given pixmap depths\n");
 #ifdef RENDER
     ErrorF("+/-render		   turn on/off RENDER extension support"
-	   "(default on)\n");
+           "(default on)\n");
 #endif
     ErrorF("-linebias n            adjust thin line pixelization\n");
     ErrorF("-blackpixel n          pixel value for black\n");
@@ -322,215 +322,215 @@ ddxProcessArgument(int argc, char *argv[], int i)
 
     if (firstTime)
     {
-	vfbInitializeDefaultScreens();
-	vfbInitializePixmapDepths();
-	firstTime = FALSE;
+        vfbInitializeDefaultScreens();
+        vfbInitializePixmapDepths();
+        firstTime = FALSE;
     }
 
     if (argv[i][0] ==  ':')
-	displaySpecified = true;
+        displaySpecified = true;
 
     if (strcmp (argv[i], "-screen") == 0)	/* -screen n WxHxD */
     {
-	int screenNum;
-	if (i + 2 >= argc) UseMsg();
-	screenNum = atoi(argv[i+1]);
-	if (screenNum < 0 || screenNum >= MAXSCREENS)
-	{
-	    ErrorF("Invalid screen number %d\n", screenNum);
-	    UseMsg();
-	}
-	if (3 != sscanf(argv[i+2], "%dx%dx%d",
-			&vfbScreens[screenNum].fb.width,
-			&vfbScreens[screenNum].fb.height,
-			&vfbScreens[screenNum].fb.depth))
-	{
-	    ErrorF("Invalid screen configuration %s\n", argv[i+2]);
-	    UseMsg();
-	}
+        int screenNum;
+        if (i + 2 >= argc) UseMsg();
+        screenNum = atoi(argv[i+1]);
+        if (screenNum < 0 || screenNum >= MAXSCREENS)
+        {
+            ErrorF("Invalid screen number %d\n", screenNum);
+            UseMsg();
+        }
+        if (3 != sscanf(argv[i+2], "%dx%dx%d",
+                        &vfbScreens[screenNum].fb.width,
+                        &vfbScreens[screenNum].fb.height,
+                        &vfbScreens[screenNum].fb.depth))
+        {
+            ErrorF("Invalid screen configuration %s\n", argv[i+2]);
+            UseMsg();
+        }
 
-	if (screenNum >= vfbNumScreens)
-	    vfbNumScreens = screenNum + 1;
-	lastScreen = screenNum;
-	return 3;
+        if (screenNum >= vfbNumScreens)
+            vfbNumScreens = screenNum + 1;
+        lastScreen = screenNum;
+        return 3;
     }
 
     if (strcmp (argv[i], "-pixdepths") == 0)	/* -pixdepths list-of-depth */
     {
-	int depth, ret = 1;
+        int depth, ret = 1;
 
-	if (++i >= argc) UseMsg();
-	while ((i < argc) && (depth = atoi(argv[i++])) != 0)
-	{
-	    if (depth < 0 || depth > 32)
-	    {
-		ErrorF("Invalid pixmap depth %d\n", depth);
-		UseMsg();
-	    }
-	    vfbPixmapDepths[depth] = TRUE;
-	    ret++;
-	}
-	return ret;
+        if (++i >= argc) UseMsg();
+        while ((i < argc) && (depth = atoi(argv[i++])) != 0)
+        {
+            if (depth < 0 || depth > 32)
+            {
+                ErrorF("Invalid pixmap depth %d\n", depth);
+                UseMsg();
+            }
+            vfbPixmapDepths[depth] = TRUE;
+            ret++;
+        }
+        return ret;
     }
 
     if (strcmp (argv[i], "+render") == 0)	/* +render */
     {
-	Render = TRUE;
-	return 1;
+        Render = TRUE;
+        return 1;
     }
 
     if (strcmp (argv[i], "-render") == 0)	/* -render */
     {
-	Render = FALSE;
-	return 1;
+        Render = FALSE;
+        return 1;
     }
 
     if (strcmp (argv[i], "-blackpixel") == 0)	/* -blackpixel n */
     {
-	Pixel pix;
-	if (++i >= argc) UseMsg();
-	pix = atoi(argv[i]);
-	if (-1 == lastScreen)
-	{
-	    int i;
-	    for (i = 0; i < MAXSCREENS; i++)
-	    {
-		vfbScreens[i].blackPixel = pix;
-	    }
-	}
-	else
-	{
-	    vfbScreens[lastScreen].blackPixel = pix;
-	}
-	return 2;
+        Pixel pix;
+        if (++i >= argc) UseMsg();
+        pix = atoi(argv[i]);
+        if (-1 == lastScreen)
+        {
+            int i;
+            for (i = 0; i < MAXSCREENS; i++)
+            {
+                vfbScreens[i].blackPixel = pix;
+            }
+        }
+        else
+        {
+            vfbScreens[lastScreen].blackPixel = pix;
+        }
+        return 2;
     }
 
     if (strcmp (argv[i], "-whitepixel") == 0)	/* -whitepixel n */
     {
-	Pixel pix;
-	if (++i >= argc) UseMsg();
-	pix = atoi(argv[i]);
-	if (-1 == lastScreen)
-	{
-	    int i;
-	    for (i = 0; i < MAXSCREENS; i++)
-	    {
-		vfbScreens[i].whitePixel = pix;
-	    }
-	}
-	else
-	{
-	    vfbScreens[lastScreen].whitePixel = pix;
-	}
-	return 2;
+        Pixel pix;
+        if (++i >= argc) UseMsg();
+        pix = atoi(argv[i]);
+        if (-1 == lastScreen)
+        {
+            int i;
+            for (i = 0; i < MAXSCREENS; i++)
+            {
+                vfbScreens[i].whitePixel = pix;
+            }
+        }
+        else
+        {
+            vfbScreens[lastScreen].whitePixel = pix;
+        }
+        return 2;
     }
 
     if (strcmp (argv[i], "-linebias") == 0)	/* -linebias n */
     {
-	unsigned int linebias;
-	if (++i >= argc) UseMsg();
-	linebias = atoi(argv[i]);
-	if (-1 == lastScreen)
-	{
-	    int i;
-	    for (i = 0; i < MAXSCREENS; i++)
-	    {
-		vfbScreens[i].lineBias = linebias;
-	    }
-	}
-	else
-	{
-	    vfbScreens[lastScreen].lineBias = linebias;
-	}
-	return 2;
+        unsigned int linebias;
+        if (++i >= argc) UseMsg();
+        linebias = atoi(argv[i]);
+        if (-1 == lastScreen)
+        {
+            int i;
+            for (i = 0; i < MAXSCREENS; i++)
+            {
+                vfbScreens[i].lineBias = linebias;
+            }
+        }
+        else
+        {
+            vfbScreens[lastScreen].lineBias = linebias;
+        }
+        return 2;
     }
 
 #ifdef HAS_SHM
     if (strcmp (argv[i], "-shmem") == 0)	/* -shmem */
     {
-	fbmemtype = SHARED_MEMORY_FB;
-	return 1;
+        fbmemtype = SHARED_MEMORY_FB;
+        return 1;
     }
 #endif
 
     if (strcmp(argv[i], "-geometry") == 0)
     {
-	if (++i >= argc) UseMsg();
-	if (sscanf(argv[i],"%dx%d",&vfbScreens[0].fb.width,
-		   &vfbScreens[0].fb.height) != 2) {
-	    ErrorF("Invalid geometry %s\n", argv[i]);
-	    UseMsg();
-	}
-	return 2;
+        if (++i >= argc) UseMsg();
+        if (sscanf(argv[i],"%dx%d",&vfbScreens[0].fb.width,
+                   &vfbScreens[0].fb.height) != 2) {
+            ErrorF("Invalid geometry %s\n", argv[i]);
+            UseMsg();
+        }
+        return 2;
     }
 
     if (strcmp(argv[i], "-depth") == 0)
     {
-	if (++i >= argc) UseMsg();
-	vfbScreens[0].fb.depth = atoi(argv[i]);
-	return 2;
+        if (++i >= argc) UseMsg();
+        vfbScreens[0].fb.depth = atoi(argv[i]);
+        return 2;
     }
 
     if (strcmp(argv[i], "-pixelformat") == 0)
     {
-	char rgbbgr[4];
-	int bits1, bits2, bits3;
-	if (++i >= argc) UseMsg();
-	if (sscanf(argv[i], "%3s%1d%1d%1d", rgbbgr,&bits1,&bits2,&bits3) < 4) {
-	    ErrorF("Invalid pixel format %s\n", argv[i]);
-	    UseMsg();
-	}
+        char rgbbgr[4];
+        int bits1, bits2, bits3;
+        if (++i >= argc) UseMsg();
+        if (sscanf(argv[i], "%3s%1d%1d%1d", rgbbgr,&bits1,&bits2,&bits3) < 4) {
+            ErrorF("Invalid pixel format %s\n", argv[i]);
+            UseMsg();
+        }
 
 #undef strcasecmp
 
-#define SET_PIXEL_FORMAT(vfbScreen)                     \
-    (vfbScreen).pixelFormatDefined = TRUE;              \
-    (vfbScreen).fb.depth = bits1 + bits2 + bits3;          \
-    (vfbScreen).greenBits = bits2;                      \
-    if (strcasecmp(rgbbgr, "bgr") == 0) {               \
-        (vfbScreen).rgbNotBgr = FALSE;                  \
-        (vfbScreen).redBits = bits3;                    \
-        (vfbScreen).blueBits = bits1;                   \
-    } else if (strcasecmp(rgbbgr, "rgb") == 0) {        \
-        (vfbScreen).rgbNotBgr = TRUE;                   \
-        (vfbScreen).redBits = bits1;                    \
-        (vfbScreen).blueBits = bits3;                   \
-    } else {                                            \
-        ErrorF("Invalid pixel format %s\n", argv[i]);   \
-        UseMsg();                                       \
-    }
+#define SET_PIXEL_FORMAT(vfbScreen)                         \
+        (vfbScreen).pixelFormatDefined = TRUE;              \
+        (vfbScreen).fb.depth = bits1 + bits2 + bits3;       \
+        (vfbScreen).greenBits = bits2;                      \
+        if (strcasecmp(rgbbgr, "bgr") == 0) {               \
+            (vfbScreen).rgbNotBgr = FALSE;                  \
+            (vfbScreen).redBits = bits3;                    \
+            (vfbScreen).blueBits = bits1;                   \
+        } else if (strcasecmp(rgbbgr, "rgb") == 0) {        \
+            (vfbScreen).rgbNotBgr = TRUE;                   \
+            (vfbScreen).redBits = bits1;                    \
+            (vfbScreen).blueBits = bits3;                   \
+        } else {                                            \
+            ErrorF("Invalid pixel format %s\n", argv[i]);   \
+            UseMsg();                                       \
+        }
 
-	if (-1 == lastScreen)
-	{
-	    int i;
-	    for (i = 0; i < MAXSCREENS; i++)
-	    {
-		SET_PIXEL_FORMAT(vfbScreens[i]);
-	    }
-	}
-	else
-	{
-	    SET_PIXEL_FORMAT(vfbScreens[lastScreen]);
-	}
+        if (-1 == lastScreen)
+        {
+            int i;
+            for (i = 0; i < MAXSCREENS; i++)
+            {
+                SET_PIXEL_FORMAT(vfbScreens[i]);
+            }
+        }
+        else
+        {
+            SET_PIXEL_FORMAT(vfbScreens[lastScreen]);
+        }
 
-	return 2;
+        return 2;
     }
 
     if (strcmp(argv[i], "-interface") == 0 ||
-	strcmp(argv[i], "-i") == 0) {
-	if (++i >= argc) {
-	    UseMsg();
-	    return 2;
-	}
+        strcmp(argv[i], "-i") == 0) {
+        if (++i >= argc) {
+            UseMsg();
+            return 2;
+        }
 
-	if (listenaddr != NULL) /* Only first -interface is valid */
-		return 2;
+        if (listenaddr != NULL) /* Only first -interface is valid */
+            return 2;
 
-	listenaddr = strdup(argv[i]);
-	if (listenaddr == NULL)
-	    FatalError("Not enough memory");
+        listenaddr = strdup(argv[i]);
+        if (listenaddr == NULL)
+            FatalError("Not enough memory");
 
-	return 2;
+        return 2;
     }
 
     if (!strcmp(argv[i], "-verbose")) {
@@ -608,50 +608,50 @@ vfbInstallColormap(ColormapPtr pmap)
 
     if (pmap != oldpmap)
     {
-	int entries;
-	VisualPtr pVisual;
-	Pixel *     ppix;
-	xrgb *      prgb;
-	xColorItem *defs;
-	int i;
+        int entries;
+        VisualPtr pVisual;
+        Pixel *     ppix;
+        xrgb *      prgb;
+        xColorItem *defs;
+        int i;
 
-	if(oldpmap != (ColormapPtr)None)
-	    WalkTree(pmap->pScreen, TellLostMap, (char *)&oldpmap->mid);
-	/* Install pmap */
+        if(oldpmap != (ColormapPtr)None)
+            WalkTree(pmap->pScreen, TellLostMap, (char *)&oldpmap->mid);
+        /* Install pmap */
 #if XORG < 113
-	InstalledMaps[index] = pmap;
+        InstalledMaps[index] = pmap;
 #else
-	SetInstalledColormap(pmap->pScreen, pmap);
+        SetInstalledColormap(pmap->pScreen, pmap);
 #endif
-	WalkTree(pmap->pScreen, TellGainedMap, (char *)&pmap->mid);
+        WalkTree(pmap->pScreen, TellGainedMap, (char *)&pmap->mid);
 
-	entries = pmap->pVisual->ColormapEntries;
-	pVisual = pmap->pVisual;
+        entries = pmap->pVisual->ColormapEntries;
+        pVisual = pmap->pVisual;
 
-	ppix = (Pixel *)xalloc(entries * sizeof(Pixel));
-	prgb = (xrgb *)xalloc(entries * sizeof(xrgb));
-	defs = (xColorItem *)xalloc(entries * sizeof(xColorItem));
+        ppix = (Pixel *)xalloc(entries * sizeof(Pixel));
+        prgb = (xrgb *)xalloc(entries * sizeof(xrgb));
+        defs = (xColorItem *)xalloc(entries * sizeof(xColorItem));
 
-	for (i = 0; i < entries; i++)  ppix[i] = i;
-	/* XXX truecolor */
+        for (i = 0; i < entries; i++)  ppix[i] = i;
+        /* XXX truecolor */
 #if XORG < 19
-	QueryColors(pmap, entries, ppix, prgb);
+        QueryColors(pmap, entries, ppix, prgb);
 #else
-	QueryColors(pmap, entries, ppix, prgb, serverClient);
+        QueryColors(pmap, entries, ppix, prgb, serverClient);
 #endif
 
-	for (i = 0; i < entries; i++) { /* convert xrgbs to xColorItems */
-	    defs[i].pixel = ppix[i] & 0xff; /* change pixel to index */
-	    defs[i].red = prgb[i].red;
-	    defs[i].green = prgb[i].green;
-	    defs[i].blue = prgb[i].blue;
-	    defs[i].flags =  DoRed|DoGreen|DoBlue;
-	}
-	(*pmap->pScreen->StoreColors)(pmap, entries, defs);
+        for (i = 0; i < entries; i++) { /* convert xrgbs to xColorItems */
+            defs[i].pixel = ppix[i] & 0xff; /* change pixel to index */
+            defs[i].red = prgb[i].red;
+            defs[i].green = prgb[i].green;
+            defs[i].blue = prgb[i].blue;
+            defs[i].flags =  DoRed|DoGreen|DoBlue;
+        }
+        (*pmap->pScreen->StoreColors)(pmap, entries, defs);
 
-	xfree(ppix);
-	xfree(prgb);
-	xfree(defs);
+        xfree(ppix);
+        xfree(prgb);
+        xfree(defs);
     }
 }
 
@@ -666,17 +666,17 @@ vfbUninstallColormap(ColormapPtr pmap)
 
     if(pmap == curpmap)
     {
-	if (pmap->mid != pmap->pScreen->defColormap)
-	{
+        if (pmap->mid != pmap->pScreen->defColormap)
+        {
 #if XORG < 111
-	    curpmap = (ColormapPtr) LookupIDByType(pmap->pScreen->defColormap,
-						   RT_COLORMAP);
+            curpmap = (ColormapPtr) LookupIDByType(pmap->pScreen->defColormap,
+                                                   RT_COLORMAP);
 #else
-	    dixLookupResourceByType((pointer *) &curpmap, pmap->pScreen->defColormap,
-				    RT_COLORMAP, serverClient, DixUnknownAccess);
+            dixLookupResourceByType((pointer *) &curpmap, pmap->pScreen->defColormap,
+                                    RT_COLORMAP, serverClient, DixUnknownAccess);
 #endif
-	    (*pmap->pScreen->InstallColormap)(curpmap);
-	}
+            (*pmap->pScreen->InstallColormap)(curpmap);
+        }
     }
 }
 
@@ -782,33 +782,33 @@ vfbCrossScreen (ScreenPtr pScreen, Bool entering)
 
 static Bool vfbRealizeCursor(
 #if XORG >= 16
-			     DeviceIntPtr pDev,
+    DeviceIntPtr pDev,
 #endif
-			     ScreenPtr pScreen, CursorPtr pCursor) {
+    ScreenPtr pScreen, CursorPtr pCursor) {
     return TRUE;
 }
 
 static Bool vfbUnrealizeCursor(
 #if XORG >= 16
-			       DeviceIntPtr pDev,
+    DeviceIntPtr pDev,
 #endif
-			       ScreenPtr pScreen, CursorPtr pCursor) {
+    ScreenPtr pScreen, CursorPtr pCursor) {
     return TRUE;
 }
 
 static void vfbSetCursor(
 #if XORG >= 16
-			 DeviceIntPtr pDev,
+    DeviceIntPtr pDev,
 #endif
-			 ScreenPtr pScreen, CursorPtr pCursor, int x, int y)
+    ScreenPtr pScreen, CursorPtr pCursor, int x, int y)
 {
 }
 
 static void vfbMoveCursor(
 #if XORG >= 16
-			  DeviceIntPtr pDev,
+    DeviceIntPtr pDev,
 #endif
-			  ScreenPtr pScreen, int x, int y)
+    ScreenPtr pScreen, int x, int y)
 {
 }
 
@@ -846,9 +846,9 @@ static miPointerScreenFuncRec vfbPointerCursorFuncs = {
 
 static Bool vncRandRGetInfo (ScreenPtr pScreen, Rotation *rotations)
 {
-  // We update all information right away, so there is nothing to
-  // do here.
-  return TRUE;
+    // We update all information right away, so there is nothing to
+    // do here.
+    return TRUE;
 }
 
 /* from hw/xfree86/common/xf86Helper.c */
@@ -876,27 +876,27 @@ xf86SetRootClip (ScreenPtr pScreen, Bool enable)
 
     if (WasViewable)
     {
-	for (pChild = pWin->firstChild; pChild; pChild = pChild->nextSib)
-	{
-	    (void) (*pScreen->MarkOverlappedWindows)(pChild,
-						     pChild,
-						     &pLayerWin);
-	}
-	(*pScreen->MarkWindow) (pWin);
-	anyMarked = TRUE;
-	if (pWin->valdata)
-	{
-	    if (HasBorder (pWin))
-	    {
-		RegionPtr	borderVisible;
+        for (pChild = pWin->firstChild; pChild; pChild = pChild->nextSib)
+        {
+            (void) (*pScreen->MarkOverlappedWindows)(pChild,
+                                                     pChild,
+                                                     &pLayerWin);
+        }
+        (*pScreen->MarkWindow) (pWin);
+        anyMarked = TRUE;
+        if (pWin->valdata)
+        {
+            if (HasBorder (pWin))
+            {
+                RegionPtr	borderVisible;
 
-		borderVisible = REGION_CREATE(pScreen, NullBox, 1);
-		REGION_SUBTRACT(pScreen, borderVisible,
-				&pWin->borderClip, &pWin->winSize);
-		pWin->valdata->before.borderVisible = borderVisible;
-	    }
-	    pWin->valdata->before.resized = TRUE;
-	}
+                borderVisible = REGION_CREATE(pScreen, NullBox, 1);
+                REGION_SUBTRACT(pScreen, borderVisible,
+                                &pWin->borderClip, &pWin->winSize);
+                pWin->valdata->before.borderVisible = borderVisible;
+            }
+            pWin->valdata->before.resized = TRUE;
+        }
     }
 
     /*
@@ -906,22 +906,22 @@ xf86SetRootClip (ScreenPtr pScreen, Bool enable)
      */
     if (enable)
     {
-	box.x1 = 0;
-	box.y1 = 0;
-	box.x2 = pScreen->width;
-	box.y2 = pScreen->height;
-	REGION_INIT (pScreen, &pWin->winSize, &box, 1);
-	REGION_INIT (pScreen, &pWin->borderSize, &box, 1);
-	if (WasViewable)
-	    REGION_RESET(pScreen, &pWin->borderClip, &box);
-	pWin->drawable.width = pScreen->width;
-	pWin->drawable.height = pScreen->height;
+        box.x1 = 0;
+        box.y1 = 0;
+        box.x2 = pScreen->width;
+        box.y2 = pScreen->height;
+        REGION_INIT (pScreen, &pWin->winSize, &box, 1);
+        REGION_INIT (pScreen, &pWin->borderSize, &box, 1);
+        if (WasViewable)
+            REGION_RESET(pScreen, &pWin->borderClip, &box);
+        pWin->drawable.width = pScreen->width;
+        pWin->drawable.height = pScreen->height;
         REGION_BREAK (pWin->drawable.pScreen, &pWin->clipList);
     }
     else
     {
-	REGION_EMPTY(pScreen, &pWin->borderClip);
-	REGION_BREAK (pWin->drawable.pScreen, &pWin->clipList);
+        REGION_EMPTY(pScreen, &pWin->borderClip);
+        REGION_BREAK (pWin->drawable.pScreen, &pWin->clipList);
     }
 
     ResizeChildrenWinSize (pWin, 0, 0, 0, 0);
@@ -929,74 +929,74 @@ xf86SetRootClip (ScreenPtr pScreen, Bool enable)
     if (WasViewable)
     {
 #if XORG < 110
-	if (pWin->backStorage)
-	{
-	    pOldClip = REGION_CREATE(pScreen, NullBox, 1);
-	    REGION_COPY(pScreen, pOldClip, &pWin->clipList);
-	}
+        if (pWin->backStorage)
+        {
+            pOldClip = REGION_CREATE(pScreen, NullBox, 1);
+            REGION_COPY(pScreen, pOldClip, &pWin->clipList);
+        }
 #endif
 
-	if (pWin->firstChild)
-	{
-	    anyMarked |= (*pScreen->MarkOverlappedWindows)(pWin->firstChild,
-							   pWin->firstChild,
-							   (WindowPtr *)NULL);
-	}
-	else
-	{
-	    (*pScreen->MarkWindow) (pWin);
-	    anyMarked = TRUE;
-	}
+        if (pWin->firstChild)
+        {
+            anyMarked |= (*pScreen->MarkOverlappedWindows)(pWin->firstChild,
+                                                           pWin->firstChild,
+                                                           (WindowPtr *)NULL);
+        }
+        else
+        {
+            (*pScreen->MarkWindow) (pWin);
+            anyMarked = TRUE;
+        }
 
 #if XORG < 110 && defined(DO_SAVE_UNDERS)
-	if (DO_SAVE_UNDERS(pWin))
-	{
-	    dosave = (*pScreen->ChangeSaveUnder)(pLayerWin, pLayerWin);
-	}
+        if (DO_SAVE_UNDERS(pWin))
+        {
+            dosave = (*pScreen->ChangeSaveUnder)(pLayerWin, pLayerWin);
+        }
 #endif /* DO_SAVE_UNDERS */
 
-	if (anyMarked)
-	    (*pScreen->ValidateTree)(pWin, NullWindow, VTOther);
+        if (anyMarked)
+            (*pScreen->ValidateTree)(pWin, NullWindow, VTOther);
     }
 
 #if XORG < 110
     if (pWin->backStorage &&
-	((pWin->backingStore == Always) || WasViewable))
+        ((pWin->backingStore == Always) || WasViewable))
     {
-	if (!WasViewable)
-	    pOldClip = &pWin->clipList; /* a convenient empty region */
-	bsExposed = (*pScreen->TranslateBackingStore)
-			     (pWin, 0, 0, pOldClip,
-			      pWin->drawable.x, pWin->drawable.y);
-	if (WasViewable)
-	    REGION_DESTROY(pScreen, pOldClip);
-	if (bsExposed)
-	{
-	    RegionPtr	valExposed = NullRegion;
+        if (!WasViewable)
+            pOldClip = &pWin->clipList; /* a convenient empty region */
+        bsExposed = (*pScreen->TranslateBackingStore)
+            (pWin, 0, 0, pOldClip,
+             pWin->drawable.x, pWin->drawable.y);
+        if (WasViewable)
+            REGION_DESTROY(pScreen, pOldClip);
+        if (bsExposed)
+        {
+            RegionPtr	valExposed = NullRegion;
 
-	    if (pWin->valdata)
-		valExposed = &pWin->valdata->after.exposed;
-	    (*pScreen->WindowExposures) (pWin, valExposed, bsExposed);
-	    if (valExposed)
-		REGION_EMPTY(pScreen, valExposed);
-	    REGION_DESTROY(pScreen, bsExposed);
-	}
+            if (pWin->valdata)
+                valExposed = &pWin->valdata->after.exposed;
+            (*pScreen->WindowExposures) (pWin, valExposed, bsExposed);
+            if (valExposed)
+                REGION_EMPTY(pScreen, valExposed);
+            REGION_DESTROY(pScreen, bsExposed);
+        }
     }
 #endif
     if (WasViewable)
     {
-	if (anyMarked)
-	    (*pScreen->HandleExposures)(pWin);
+        if (anyMarked)
+            (*pScreen->HandleExposures)(pWin);
 
 #if XORG < 110 && defined(DO_SAVE_UNDERS)
-	if (dosave)
-	    (*pScreen->PostChangeSaveUnder)(pLayerWin, pLayerWin);
+        if (dosave)
+            (*pScreen->PostChangeSaveUnder)(pLayerWin, pLayerWin);
 #endif /* DO_SAVE_UNDERS */
-	if (anyMarked && pScreen->PostValidateTree)
-	    (*pScreen->PostValidateTree)(pWin, NullWindow, VTOther);
+        if (anyMarked && pScreen->PostValidateTree)
+            (*pScreen->PostValidateTree)(pWin, NullWindow, VTOther);
     }
     if (pWin->realized)
-	WindowsRestructured ();
+        WindowsRestructured ();
     FlushAllOutput ();
 }
 
@@ -1328,7 +1328,7 @@ vfbScreenInit(ScreenPtr pScreen, int argc, char **argv)
     void *pbits;
 
     if (!dixRegisterPrivateKey(&cmapScrPrivateKeyRec, PRIVATE_SCREEN, 0))
-	return FALSE;
+        return FALSE;
 
     /* 96 is the default used by most other systems */
     dpi = 96;
@@ -1345,43 +1345,43 @@ vfbScreenInit(ScreenPtr pScreen, int argc, char **argv)
 
     switch (pvfb->fb.depth) {
     case 8:
-	miSetVisualTypesAndMasks (8,
-				  ((1 << StaticGray) |
-				  (1 << GrayScale) |
-				  (1 << StaticColor) |
-				  (1 << PseudoColor) |
-				  (1 << TrueColor) |
-				  (1 << DirectColor)),
-				  8, PseudoColor, 0, 0, 0);
-	break;
+        miSetVisualTypesAndMasks (8,
+                                  ((1 << StaticGray) |
+                                   (1 << GrayScale) |
+                                   (1 << StaticColor) |
+                                   (1 << PseudoColor) |
+                                   (1 << TrueColor) |
+                                   (1 << DirectColor)),
+                                  8, PseudoColor, 0, 0, 0);
+        break;
     case 16:
-	miSetVisualTypesAndMasks (16,
-				  ((1 << TrueColor) |
-				  (1 << DirectColor)),
-				  8, TrueColor, 0xf800, 0x07e0, 0x001f);
-	break;
+        miSetVisualTypesAndMasks (16,
+                                  ((1 << TrueColor) |
+                                   (1 << DirectColor)),
+                                  8, TrueColor, 0xf800, 0x07e0, 0x001f);
+        break;
     case 24:
-	miSetVisualTypesAndMasks (24,
-				  ((1 << TrueColor) |
-				  (1 << DirectColor)),
-				  8, TrueColor, 0xff0000, 0x00ff00, 0x0000ff);
-	break;
+        miSetVisualTypesAndMasks (24,
+                                  ((1 << TrueColor) |
+                                   (1 << DirectColor)),
+                                  8, TrueColor, 0xff0000, 0x00ff00, 0x0000ff);
+        break;
     case 32:
-	miSetVisualTypesAndMasks (32,
-				  ((1 << TrueColor) |
-				  (1 << DirectColor)),
-				  8, TrueColor, 0xff000000, 0x00ff0000, 0x0000ff00);
-	break;
+        miSetVisualTypesAndMasks (32,
+                                  ((1 << TrueColor) |
+                                   (1 << DirectColor)),
+                                  8, TrueColor, 0xff000000, 0x00ff0000, 0x0000ff00);
+        break;
     default:
-	return FALSE;
+        return FALSE;
     }
 
     ret = fbScreenInit(pScreen, pbits, pvfb->fb.width, pvfb->fb.height,
-		       dpi, dpi, pvfb->fb.paddedWidth, pvfb->fb.bitsPerPixel);
+                       dpi, dpi, pvfb->fb.paddedWidth, pvfb->fb.bitsPerPixel);
 
 #ifdef RENDER
     if (ret && Render)
-	ret = fbPictureInit (pScreen, 0, 0);
+        ret = fbPictureInit (pScreen, 0, 0);
 #endif
 
     if (!ret) return FALSE;
@@ -1398,48 +1398,48 @@ vfbScreenInit(ScreenPtr pScreen, int argc, char **argv)
     pScreen->SaveScreen = vfbSaveScreen;
 
     miPointerInitialize(pScreen, &vfbPointerSpriteFuncs, &vfbPointerCursorFuncs,
-			FALSE);
+                        FALSE);
 
     pScreen->blackPixel = pvfb->blackPixel;
     pScreen->whitePixel = pvfb->whitePixel;
 
     if (!pvfb->pixelFormatDefined) {
-	switch (pvfb->fb.depth) {
-	case 16:
-	    pvfb->pixelFormatDefined = TRUE;
-	    pvfb->rgbNotBgr = TRUE;
-	    pvfb->blueBits = pvfb->redBits = 5;
-	    pvfb->greenBits = 6;
-	    break;
-	case 24:
-	case 32:
-	    pvfb->pixelFormatDefined = TRUE;
-	    pvfb->rgbNotBgr = TRUE;
-	    pvfb->blueBits = pvfb->redBits = pvfb->greenBits = 8;
-	    break;
-	}
+        switch (pvfb->fb.depth) {
+        case 16:
+            pvfb->pixelFormatDefined = TRUE;
+            pvfb->rgbNotBgr = TRUE;
+            pvfb->blueBits = pvfb->redBits = 5;
+            pvfb->greenBits = 6;
+            break;
+        case 24:
+        case 32:
+            pvfb->pixelFormatDefined = TRUE;
+            pvfb->rgbNotBgr = TRUE;
+            pvfb->blueBits = pvfb->redBits = pvfb->greenBits = 8;
+            break;
+        }
     }
 
     if (pvfb->pixelFormatDefined) {
-	VisualPtr vis = pScreen->visuals;
-	for (int i = 0; i < pScreen->numVisuals; i++) {
-	    if (pvfb->rgbNotBgr) {
-		vis->offsetBlue = 0;
-		vis->blueMask = (1 << pvfb->blueBits) - 1;
-		vis->offsetGreen = pvfb->blueBits;
-		vis->greenMask = ((1 << pvfb->greenBits) - 1) << vis->offsetGreen;
-		vis->offsetRed = vis->offsetGreen + pvfb->greenBits;
-		vis->redMask = ((1 << pvfb->redBits) - 1) << vis->offsetRed;
-	    } else {
-		vis->offsetRed = 0;
-		vis->redMask = (1 << pvfb->redBits) - 1;
-		vis->offsetGreen = pvfb->redBits;
-		vis->greenMask = ((1 << pvfb->greenBits) - 1) << vis->offsetGreen;
-		vis->offsetBlue = vis->offsetGreen + pvfb->greenBits;
-		vis->blueMask = ((1 << pvfb->blueBits) - 1) << vis->offsetBlue;
-	    }
-	    vis++;
-	}
+        VisualPtr vis = pScreen->visuals;
+        for (int i = 0; i < pScreen->numVisuals; i++) {
+            if (pvfb->rgbNotBgr) {
+                vis->offsetBlue = 0;
+                vis->blueMask = (1 << pvfb->blueBits) - 1;
+                vis->offsetGreen = pvfb->blueBits;
+                vis->greenMask = ((1 << pvfb->greenBits) - 1) << vis->offsetGreen;
+                vis->offsetRed = vis->offsetGreen + pvfb->greenBits;
+                vis->redMask = ((1 << pvfb->redBits) - 1) << vis->offsetRed;
+            } else {
+                vis->offsetRed = 0;
+                vis->redMask = (1 << pvfb->redBits) - 1;
+                vis->offsetGreen = pvfb->redBits;
+                vis->greenMask = ((1 << pvfb->greenBits) - 1) << vis->offsetGreen;
+                vis->offsetBlue = vis->offsetGreen + pvfb->greenBits;
+                vis->blueMask = ((1 << pvfb->blueBits) - 1) << vis->offsetBlue;
+            }
+            vis++;
+        }
     }
 
     ret = fbCreateDefColormap(pScreen);
@@ -1470,13 +1470,13 @@ vfbScreenInit(ScreenPtr pScreen, int argc, char **argv)
 #endif
 
 
-  return TRUE;
+    return TRUE;
 
 } /* end vfbScreenInit */
 
 
 static void vfbClientStateChange(CallbackListPtr* a, pointer b, pointer c) {
-  dispatchException &= ~DE_RESET;
+    dispatchException &= ~DE_RESET;
 }
 
 #if XORG >= 113
@@ -1494,9 +1494,9 @@ static ExtensionModule glxExt = {
 void
 InitOutput(ScreenInfo *screenInfo, int argc, char **argv)
 {
-  ErrorF("\nXvirt - built %s\n", buildtime);
-  ErrorF("Underlying X server release %d, %s\n\n", VENDOR_RELEASE,
-         VENDOR_STRING);
+    ErrorF("\nXvirt - built %s\n", buildtime);
+    ErrorF("Underlying X server release %d, %s\n\n", VENDOR_RELEASE,
+           VENDOR_STRING);
     int i;
     int NumFormats = 0;
 
@@ -1510,31 +1510,31 @@ InitOutput(ScreenInfo *screenInfo, int argc, char **argv)
     /* must have a pixmap depth to match every screen depth */
     for (i = 0; i < vfbNumScreens; i++)
     {
-	vfbPixmapDepths[vfbScreens[i].fb.depth] = TRUE;
+        vfbPixmapDepths[vfbScreens[i].fb.depth] = TRUE;
     }
 
     /* RENDER needs a good set of pixmaps. */
     if (Render) {
-	vfbPixmapDepths[1] = TRUE;
-	vfbPixmapDepths[4] = TRUE;
-	vfbPixmapDepths[8] = TRUE;
+        vfbPixmapDepths[1] = TRUE;
+        vfbPixmapDepths[4] = TRUE;
+        vfbPixmapDepths[8] = TRUE;
 /*	vfbPixmapDepths[15] = TRUE; */
-	vfbPixmapDepths[16] = TRUE;
-	vfbPixmapDepths[24] = TRUE;
-	vfbPixmapDepths[32] = TRUE;
+        vfbPixmapDepths[16] = TRUE;
+        vfbPixmapDepths[24] = TRUE;
+        vfbPixmapDepths[32] = TRUE;
     }
 
     for (i = 1; i <= 32; i++)
     {
-	if (vfbPixmapDepths[i])
-	{
-	    if (NumFormats >= MAXFORMATS)
-		FatalError ("MAXFORMATS is too small for this server\n");
-	    screenInfo->formats[NumFormats].depth = i;
-	    screenInfo->formats[NumFormats].bitsPerPixel = vfbBitsPerPixel(i);
-	    screenInfo->formats[NumFormats].scanlinePad = BITMAP_SCANLINE_PAD;
-	    NumFormats++;
-	}
+        if (vfbPixmapDepths[i])
+        {
+            if (NumFormats >= MAXFORMATS)
+                FatalError ("MAXFORMATS is too small for this server\n");
+            screenInfo->formats[NumFormats].depth = i;
+            screenInfo->formats[NumFormats].bitsPerPixel = vfbBitsPerPixel(i);
+            screenInfo->formats[NumFormats].scanlinePad = BITMAP_SCANLINE_PAD;
+            NumFormats++;
+        }
     }
 
     screenInfo->imageByteOrder = IMAGE_BYTE_ORDER;
@@ -1547,14 +1547,14 @@ InitOutput(ScreenInfo *screenInfo, int argc, char **argv)
 
     for (i = 0; i < vfbNumScreens; i++)
     {
-	if (-1 == AddScreen(vfbScreenInit, argc, argv))
-	{
-	    FatalError("Couldn't add screen %d", i);
-	}
+        if (-1 == AddScreen(vfbScreenInit, argc, argv))
+        {
+            FatalError("Couldn't add screen %d", i);
+        }
     }
 
     if (!AddCallback(&ClientStateCallback, vfbClientStateChange, 0)) {
-	FatalError("AddCallback failed\n");
+        FatalError("AddCallback failed\n");
     }
 } /* end InitOutput */
 
@@ -1565,20 +1565,20 @@ int SelectWaitTime = 10000; /* usec */
 
 void DDXRingBell(int percent, int pitch, int duration)
 {
-  if (percent > 0)
-      fprintf(stderr, "Bell!");
+    if (percent > 0)
+        fprintf(stderr, "Bell!");
 }
 
 Bool LegalModifier(unsigned int key, DeviceIntPtr pDev)
 {
-  return TRUE;
+    return TRUE;
 }
 
 void ProcessInputEvents()
 {
-  mieqProcessInputEvents();
+    mieqProcessInputEvents();
 #if XORG == 15
-  miPointerUpdate();
+    miPointerUpdate();
 #endif
 }
 
@@ -1587,7 +1587,7 @@ void ProcessInputEvents()
 
 void InitInput(int argc, char *argv[])
 {
-  mieqInit ();
+    mieqInit ();
 }
 
 void CloseInput(void)
