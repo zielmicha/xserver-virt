@@ -86,10 +86,6 @@ from the X Consortium.
 #define Xfree free
 #endif
 
-#define XVNCVERSION "TigerVNC 1.3.80"
-#define XVNCCOPYRIGHT ("Copyright (C) 1999-2013 TigerVNC Team and many others (see README.txt)\n" \
-                       "See http://www.tigervnc.org for information on TigerVNC.\n")
-
 
 extern char *display;
 extern int monitorResolution;
@@ -154,7 +150,6 @@ static int lastScreen = -1;
 static Bool Render = TRUE;
 
 static bool displaySpecified = false;
-static char displayNumStr[16];
 
 char *listenaddr = NULL;
 
@@ -291,7 +286,7 @@ void ddxBeforeReset(void)
 void
 ddxUseMsg()
 {
-    ErrorF("\nXvnc %s - built %s\n%s", XVNCVERSION, buildtime, XVNCCOPYRIGHT);
+    ErrorF("\nXvirt %s - built %s\n%s", buildtime);
     ErrorF("Underlying X server release %d, %s\n\n", VENDOR_RELEASE,
            VENDOR_STRING);
     ErrorF("-screen scrn WxHxD     set screen's width, height, depth\n");
@@ -311,39 +306,13 @@ ddxUseMsg()
     ErrorF("-geometry WxH          set screen 0's width, height\n");
     ErrorF("-depth D               set screen 0's depth\n");
     ErrorF("-pixelformat fmt       set pixel format (rgbNNN or bgrNNN)\n");
-    ErrorF("-inetd                 has been launched from inetd\n");
-    ErrorF("-interface IP_address  listen on specified interface\n");
-    ErrorF("-noclipboard           disable clipboard settings modification via vncconfig utility\n");
     ErrorF("-verbose [n]           verbose startup messages\n");
     ErrorF("-quiet                 minimal startup messages\n");
-    ErrorF("\nVNC parameters:\n");
-
-    fprintf(stderr,"\n"
-            "Parameters can be turned on with -<param> or off with -<param>=0\n"
-            "Parameters which take a value can be specified as "
-            "-<param> <value>\n"
-            "Other valid forms are <param>=<value> -<param>=<value> "
-            "--<param>=<value>\n"
-            "Parameter names are case-insensitive.  The parameters are:\n\n");
-
 }
 
 /* ddxInitGlobals - called by |InitGlobals| from os/util.c */
 void ddxInitGlobals(void)
 {
-}
-
-static
-bool displayNumFree(int num)
-{
-    char file[256];
-    sprintf(file, "/tmp/.X%d-lock", num);
-    if (access(file, F_OK) == 0) return false;
-    sprintf(file, "/tmp/.X11-unix/X%d", num);
-    if (access(file, F_OK) == 0) return false;
-    sprintf(file, "/usr/spool/sockets/X11/%d", num);
-    if (access(file, F_OK) == 0) return false;
-    return true;
 }
 
 int
@@ -562,11 +531,6 @@ ddxProcessArgument(int argc, char *argv[], int i)
 	    FatalError("Not enough memory");
 
 	return 2;
-    }
-
-    if (strcmp(argv[i], "-noclipboard") == 0) {
-	noclipboard = true;
-	return 1;
     }
 
     if (!strcmp(argv[i], "-verbose")) {
@@ -1240,12 +1204,11 @@ RRModePtr vncRandRModeGet(int width, int height)
     return mode;
 }
 
-static RRCrtcPtr vncRandRCrtcCreate(ScreenPtr pScreen)
+static RRCrtcPtr vncRandRCrtcCreate(ScreenPtr pScreen, char* name)
 {
     RRCrtcPtr crtc;
     RROutputPtr output;
     RRModePtr mode;
-    char name[100];
 
     /* First we create the CRTC... */
     crtc = RRCrtcCreate(pScreen, NULL);
@@ -1254,8 +1217,11 @@ static RRCrtcPtr vncRandRCrtcCreate(ScreenPtr pScreen)
     RRCrtcGammaSetSize (crtc, 256);
 
     /* Then we create a dummy output for it... */
-    sprintf(name, "VIRTUAL%d", vncRandRIndex);
-    vncRandRIndex++;
+    if(name == NULL) {
+        name = alloca(100);
+        sprintf(name, "VIRTUAL%d", vncRandRIndex);
+        vncRandRIndex++;
+    }
 
     output = RROutputCreate(pScreen, name, strlen(name), NULL);
 
@@ -1284,11 +1250,11 @@ static RRCrtcPtr vncRandRCrtcCreate(ScreenPtr pScreen)
 }
 
 /* Used from XserverDesktop when it needs more outputs... */
-RROutputPtr vncRandROutputCreate(ScreenPtr pScreen)
+RROutputPtr vncRandROutputCreate(ScreenPtr pScreen, char* name)
 {
     RRCrtcPtr crtc;
 
-    crtc = vncRandRCrtcCreate(pScreen);
+    crtc = vncRandRCrtcCreate(pScreen, name);
     if (crtc == NULL)
         return NULL;
 
@@ -1311,7 +1277,7 @@ static Bool vncRandRInit(ScreenPtr pScreen)
      * Start with a single CRTC with a single output. More will be
      * allocated as needed...
      */
-    crtc = vncRandRCrtcCreate(pScreen);
+    crtc = vncRandRCrtcCreate(pScreen, NULL);
 
     /* Make sure the current screen size is the active mode */
     mode = vncRandRModeGet(pScreen->width, pScreen->height);
@@ -1329,18 +1295,9 @@ static Bool vncRandRInit(ScreenPtr pScreen)
 
 #endif
 
-static Bool
-#if XORG < 113
-vfbCloseScreen(int index, ScreenPtr pScreen)
-#else
-vfbCloseScreen(ScreenPtr pScreen)
-#endif
+static Bool vfbCloseScreen(ScreenPtr pScreen)
 {
-#if XORG < 113
-    vfbScreenInfoPtr pvfb = &vfbScreens[index];
-#else
     vfbScreenInfoPtr pvfb = &vfbScreens[pScreen->myNum];
-#endif
     int i;
 
     pScreen->CloseScreen = pvfb->closeScreen;
@@ -1349,14 +1306,8 @@ vfbCloseScreen(ScreenPtr pScreen)
      * XXX probably lots of stuff to clean.  For now,
      * clear installed colormaps so that server reset works correctly.
      */
-#if XORG < 113
-    for (i = 0; i < MAXSCREENS; i++)
-	InstalledMaps[i] = NULL;
-
-    return pScreen->CloseScreen(index, pScreen);
-#else
     for (i = 0; i < screenInfo.numScreens; i++)
-	SetInstalledColormap(screenInfo.screens[i], NULL);
+        SetInstalledColormap(screenInfo.screens[i], NULL);
 
     /*
      * fb overwrites miCloseScreen, so do this here
@@ -1366,29 +1317,18 @@ vfbCloseScreen(ScreenPtr pScreen)
     pScreen->devPrivate = NULL;
 
     return pScreen->CloseScreen(pScreen);
-#endif
 }
 
 static Bool
-#if XORG < 113
-vfbScreenInit(int index, ScreenPtr pScreen, int argc, char **argv)
-#else
 vfbScreenInit(ScreenPtr pScreen, int argc, char **argv)
-#endif
 {
-#if XORG < 113
-    vfbScreenInfoPtr pvfb = &vfbScreens[index];
-#else
     vfbScreenInfoPtr pvfb = &vfbScreens[pScreen->myNum];
-#endif
     int dpi;
     int ret;
     void *pbits;
 
-#if XORG >= 113
     if (!dixRegisterPrivateKey(&cmapScrPrivateKeyRec, PRIVATE_SCREEN, 0))
 	return FALSE;
-#endif
 
     /* 96 is the default used by most other systems */
     dpi = 96;
@@ -1397,13 +1337,9 @@ vfbScreenInit(ScreenPtr pScreen, int argc, char **argv)
 
     pbits = vfbAllocateFramebufferMemory(&pvfb->fb);
     if (!pbits) return FALSE;
-#if XORG < 113
-    vncFbptr[index] = pbits;
-    vncFbstride[index] = pvfb->fb.paddedWidth;
-#else
+
     vncFbptr[pScreen->myNum] = pbits;
     vncFbstride[pScreen->myNum] = pvfb->fb.paddedWidth;
-#endif
 
     miSetPixmapDepths();
 
@@ -1449,10 +1385,6 @@ vfbScreenInit(ScreenPtr pScreen, int argc, char **argv)
 #endif
 
     if (!ret) return FALSE;
-
-#if XORG < 110
-    miInitializeBackingStore(pScreen);
-#endif
 
     /*
      * Circumvent the backing store that was just initialised.  This amounts
@@ -1562,17 +1494,15 @@ static ExtensionModule glxExt = {
 void
 InitOutput(ScreenInfo *screenInfo, int argc, char **argv)
 {
-  ErrorF("\nXvnc %s - built %s\n%s", XVNCVERSION, buildtime, XVNCCOPYRIGHT);
+  ErrorF("\nXvirt - built %s\n", buildtime);
   ErrorF("Underlying X server release %d, %s\n\n", VENDOR_RELEASE,
          VENDOR_STRING);
     int i;
     int NumFormats = 0;
 
-#if XORG >= 113
 #ifdef GLXEXT
     if (serverGeneration == 1)
         LoadExtension(&glxExt, TRUE);
-#endif
 #endif
 
     /* initialize pixmap formats */
@@ -1660,8 +1590,6 @@ void InitInput(int argc, char *argv[])
   mieqInit ();
 }
 
-#if XORG > 17
 void CloseInput(void)
 {
 }
-#endif

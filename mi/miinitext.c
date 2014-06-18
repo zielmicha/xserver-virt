@@ -240,7 +240,7 @@ extern void vncExtensionInit(INITARGS);
 
 /* List of built-in (statically linked) extensions */
 static ExtensionModule staticExtensions[] = {
-    {vncExtensionInit, "VNC-EXTENSION", NULL},
+    {vncExtensionInit, "Virt-Display", NULL},
     {GEExtensionInit, "Generic Event Extension", &noGEExtension},
     {ShapeExtensionInit, "SHAPE", NULL},
 #ifdef MITSHM

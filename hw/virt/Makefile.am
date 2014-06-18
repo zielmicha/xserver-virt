@@ -1,7 +1,9 @@
 bin_PROGRAMS = Xvirt
 
 XVNC_MORE_CPPFLAGS=-I../../Xext -I../../fb -I../../miext/damage/ \
-	-I../../mi -I../../render -I../../randr -DDPMSExtension
+	-I../../mi -I../../render -I../../randr -DDPMSExtension \
+	-Wno-declaration-after-statement -Wno-old-style-definition \
+	-Wno-missing-prototypes -Wno-shadow
 
 Xvirt_SOURCES = xvirt.c virtExtInit.cc \
 	$(top_srcdir)/Xi/stubs.c $(top_srcdir)/mi/miinitext.c \
