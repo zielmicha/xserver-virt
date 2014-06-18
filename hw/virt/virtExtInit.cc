@@ -37,11 +37,14 @@ extern "C" {
 #include "dixstruct.h"
 #include "extnsionst.h"
 #include "scrnintstr.h"
+#include "randrstr.h"
 #include "selection.h"
 }
 
 #include "virtExtInit.h"
 #include "xorg-version.h"
+
+#include "query.h"
 
 extern "C" {
   extern void vncExtensionInit();
@@ -155,13 +158,29 @@ static CARD32 queryConnectTimerCallback(OsTimerPtr timer,
   return 0;
 }
 
+extern "C" {
+    RROutputPtr vncRandROutputCreate(ScreenPtr pScreen, char* name);
+}
+
+static int ProcVirtDisplayAdjust(ClientPtr client) {
+    REQUEST(xVirtDisplayAdjustReq);
+    stuff->name[sizeof(stuff->name) - 1] = 0;
+
+    fprintf(stderr, "Create output: '%s'\n", stuff->name);
+
+    vncRandROutputCreate(screenInfo.screens[0], stuff->name);
+
+    return (client->noClientException);
+}
+
 static int ProcVncExtDispatch(ClientPtr client)
 {
   REQUEST(xReq);
-  fprintf(stderr, "ProcVncExtDispatch %d\n", stuff->data);
   switch (stuff->data) {
+  case X_VirtDisplayAdjust:
+      return ProcVirtDisplayAdjust(client);
   default:
-    return BadRequest;
+      return BadRequest;
   }
 }
 

@@ -1469,7 +1469,6 @@ vfbScreenInit(ScreenPtr pScreen, int argc, char **argv)
     if (!ret) return FALSE;
 #endif
 
-
     return TRUE;
 
 } /* end vfbScreenInit */
