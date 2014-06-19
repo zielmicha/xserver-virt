@@ -9,7 +9,7 @@
 static int vfb_fd;
 
 void vfbInitMmapMemoryFramebuffer(const char* name) {
-    fprintf(stderr, "using %s as a framebuffer\n", name);
+    fprintf(stderr, "using '%s' as a framebuffer\n", name);
     vfb_fd = open(name, O_CREAT | O_TRUNC | O_RDWR, 0700);
     if(vfb_fd < 0) {
         perror("open");
@@ -17,6 +17,8 @@ void vfbInitMmapMemoryFramebuffer(const char* name) {
 }
 
 void vfbAllocateMmapMemoryFramebuffer(vfbFramebufferInfoPtr pfb) {
+    fprintf(stderr, "updated framebuffer - size: %dx%d, bits: %d\n",
+            pfb->paddedWidth, pfb->height, pfb->bitsPerPixel);
     int size = pfb->sizeInBytes;
     if(ftruncate(vfb_fd, size) < 0) {
         perror("ftruncate");
