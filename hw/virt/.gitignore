@@ -1,2 +1,4 @@
 /Xvirt
 /query
+/libvirtdisplay.so
+/*.pyc
