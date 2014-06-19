@@ -39,6 +39,8 @@ extern "C" {
 #include "scrnintstr.h"
 #include "randrstr.h"
 #include "selection.h"
+
+#include "xvirt.h"
 }
 
 #include "virtExtInit.h"
@@ -158,9 +160,6 @@ static CARD32 queryConnectTimerCallback(OsTimerPtr timer,
   return 0;
 }
 
-extern "C" {
-    RROutputPtr vncRandROutputCreate(ScreenPtr pScreen, char* name);
-}
 
 static int ProcVirtDisplayAdjust(ClientPtr client) {
     REQUEST(xVirtDisplayAdjustReq);
@@ -168,7 +167,24 @@ static int ProcVirtDisplayAdjust(ClientPtr client) {
 
     fprintf(stderr, "Create output: '%s'\n", stuff->name);
 
-    vncRandROutputCreate(screenInfo.screens[0], stuff->name);
+    RRCrtcPtr crtc;
+    RRModePtr mode;
+    Bool ret;
+    ScreenPtr pScreen = screenInfo.screens[0];
+
+    crtc = vncRandRCrtcCreate(pScreen, stuff->name);
+    mode = vncRandRModeGet(pScreen->width, pScreen->height);
+    if (mode == NULL) {
+        fprintf(stderr, "Failed to get mode\n");
+        return (BadRequest);
+    }
+
+    ret = vncRandRCrtcSet(pScreen, crtc, mode, 0, 0, RR_Rotate_0,
+                          crtc->numOutputs, crtc->outputs);
+    if(!ret) {
+        fprintf(stderr, "crtc set failed\n");
+    }
+    RRModeDestroy(mode);
 
     return (client->noClientException);
 }

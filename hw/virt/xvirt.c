@@ -69,6 +69,7 @@
 #include "miline.h"
 #include "inputstr.h"
 #include "randrstr.h"
+#include "xvirt.h"
 
 #include <X11/keysym.h>
 extern char buildtime[];
@@ -1000,11 +1001,6 @@ xf86SetRootClip (ScreenPtr pScreen, Bool enable)
     FlushAllOutput ();
 }
 
-RRModePtr vncRandRModeGet(int width, int height);
-static Bool vncRandRCrtcSet(ScreenPtr pScreen, RRCrtcPtr crtc, RRModePtr mode,
-                            int x, int y, Rotation rotation, int num_outputs,
-                            RROutputPtr *outputs);
-
 static Bool vncRandRScreenSetSize(ScreenPtr pScreen,
                                   CARD16 width, CARD16 height,
                                   CARD32 mmWidth, CARD32 mmHeight)
@@ -1131,7 +1127,7 @@ static Bool vncRandRScreenSetSize(ScreenPtr pScreen,
     return TRUE;
 }
 
-static Bool vncRandRCrtcSet(ScreenPtr pScreen, RRCrtcPtr crtc, RRModePtr mode,
+Bool vncRandRCrtcSet(ScreenPtr pScreen, RRCrtcPtr crtc, RRModePtr mode,
                             int x, int y, Rotation rotation, int num_outputs,
                             RROutputPtr *outputs)
 {
@@ -1204,7 +1200,7 @@ RRModePtr vncRandRModeGet(int width, int height)
     return mode;
 }
 
-static RRCrtcPtr vncRandRCrtcCreate(ScreenPtr pScreen, char* name)
+RRCrtcPtr vncRandRCrtcCreate(ScreenPtr pScreen, char* name)
 {
     RRCrtcPtr crtc;
     RROutputPtr output;
