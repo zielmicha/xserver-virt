@@ -5,7 +5,7 @@ XVNC_MORE_CPPFLAGS=-I../../Xext -I../../fb -I../../miext/damage/ \
 	-Wno-declaration-after-statement -Wno-old-style-definition \
 	-Wno-missing-prototypes -Wno-shadow
 
-Xvirt_SOURCES = xvirt.c virtExtInit.cc \
+Xvirt_SOURCES = xvirt.c virtExtInit.cc mmapfb.c \
 	$(top_srcdir)/Xi/stubs.c $(top_srcdir)/mi/miinitext.c \
 	$(top_srcdir)/fb/fbcmap_mi.c buildtime.c
 

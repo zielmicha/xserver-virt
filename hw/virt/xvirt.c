@@ -70,6 +70,8 @@
 #include "inputstr.h"
 #include "randrstr.h"
 #include "xvirt.h"
+#include "mmapfb.h"
+#include "vfbinfo.h"
 
 #include <X11/keysym.h>
 extern char buildtime[];
@@ -101,31 +103,6 @@ extern int monitorResolution;
 
 typedef struct
 {
-    int width;
-    int height;
-
-    int depth;
-
-    /* Computed when allocated */
-
-    int paddedBytesWidth;
-    int paddedWidth;
-
-    int bitsPerPixel;
-
-    /* Private */
-
-    int sizeInBytes;
-
-    void *pfbMemory;
-
-#ifdef HAS_SHM
-    int shmid;
-#endif
-} vfbFramebufferInfo, *vfbFramebufferInfoPtr;
-
-typedef struct
-{
     int scrnum;
 
     Pixel blackPixel;
@@ -145,7 +122,8 @@ typedef struct
 static int vfbNumScreens;
 static vfbScreenInfo vfbScreens[MAXSCREENS];
 static Bool vfbPixmapDepths[33];
-typedef enum { NORMAL_MEMORY_FB, SHARED_MEMORY_FB } fbMemType;
+typedef enum { NORMAL_MEMORY_FB, SHARED_MEMORY_FB,
+MMAP_MEMORY_FB} fbMemType;
 static fbMemType fbmemtype = NORMAL_MEMORY_FB;
 static int lastScreen = -1;
 static Bool Render = TRUE;
@@ -446,6 +424,14 @@ ddxProcessArgument(int argc, char *argv[], int i)
         return 2;
     }
 
+    if (strcmp (argv[i], "-mmap") == 0)
+    {
+        if (++i >= argc) UseMsg();
+        vfbInitMmapMemoryFramebuffer(argv[i]);
+        fbmemtype = MMAP_MEMORY_FB;
+        return 2;
+    }
+
 #ifdef HAS_SHM
     if (strcmp (argv[i], "-shmem") == 0)	/* -shmem */
     {
@@ -712,7 +698,6 @@ vfbAllocateSharedMemoryFramebuffer(vfbFramebufferInfoPtr pfb)
 }
 #endif /* HAS_SHM */
 
-
 static void *
 vfbAllocateFramebufferMemory(vfbFramebufferInfoPtr pfb)
 {
@@ -724,6 +709,9 @@ vfbAllocateFramebufferMemory(vfbFramebufferInfoPtr pfb)
     pfb->bitsPerPixel = vfbBitsPerPixel(pfb->depth);
     pfb->paddedWidth = pfb->paddedBytesWidth * 8 / pfb->bitsPerPixel;
     pfb->sizeInBytes = pfb->paddedBytesWidth * pfb->height;
+
+    fprintf(stderr, "Allocating framebuffer, size: %d MiB\n",
+            pfb->sizeInBytes / 1024 / 1024);
 
     /* And allocate buffer */
     switch (fbmemtype) {
@@ -738,6 +726,9 @@ vfbAllocateFramebufferMemory(vfbFramebufferInfoPtr pfb)
     case NORMAL_MEMORY_FB:
         pfb->pfbMemory = Xalloc(pfb->sizeInBytes);
         break;
+    case MMAP_MEMORY_FB:
+        vfbAllocateMmapMemoryFramebuffer(pfb);
+        break;
     }
 
     /* This will be NULL if any of the above failed */
@@ -749,6 +740,8 @@ vfbFreeFramebufferMemory(vfbFramebufferInfoPtr pfb)
 {
     if ((pfb == NULL) || (pfb->pfbMemory == NULL))
         return;
+
+    fprintf(stderr, "Freeing framebuffer\n");
 
     switch (fbmemtype) {
 #ifdef HAS_SHM
@@ -764,6 +757,9 @@ vfbFreeFramebufferMemory(vfbFramebufferInfoPtr pfb)
 #endif /* HAS_SHM */
     case NORMAL_MEMORY_FB:
         Xfree(pfb->pfbMemory);
+        break;
+    case MMAP_MEMORY_FB:
+        vfbFreeMmapMemoryFramebuffer(pfb);
         break;
     }
 
